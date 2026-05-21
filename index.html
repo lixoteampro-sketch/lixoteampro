@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LixoTeamPro | Premium Book Marketing</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=Inter:wght@300;400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        :root{
+            --gd:#0a3d0a;--gp:#1a6b1a;--gm:#2d8a2d;--gl:#4caf50;--gg:#00e676;
+            --gpl:#e8f5e9;--w:#ffffff;--ow:#f8faf8;--cr:#f5f7f5;
+            --bk:#0a0a0a;--dg:#1a1a1a;--mg:#333;--lg:#666;--bg:#e0e0e0;
+            --gold:#c9a84c;
+        }
+        html{scroll-behavior:smooth;font-size:16px}
+        body{font-family:'Inter',sans-serif;color:var(--dg);background:var(--w);overflow-x:hidden;line-height:1.7}
+
+        /* ===== PRELOADER ===== */
+        .preloader{position:fixed;top:0;left:0;width:100%;height:100%;background:var(--gd);z-index:100000;display:flex;align-items:center;justify-content:center;flex-direction:column;transition:opacity 1s ease,visibility 1s ease}
+        .preloader.done{opacity:0;visibility:hidden;pointer-events:none}
+        .pl-logo{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,3.2rem);font-weight:700;color:var(--w);letter-spacing:4px;margin-bottom:40px}
+        .pl-logo b{color:var(--gl)}
+        .pl-track{width:280px;height:2px;background:rgba(255,255,255,.12);border-radius:10px;overflow:hidden}
+        .pl-bar{width:0;height:100%;background:linear-gradient(90deg,var(--gl),var(--gg));border-radius:10px;animation:plFill 2.6s ease forwards}
+        .pl-sub{color:rgba(255,255,255,.4);font-size:.72rem;letter-spacing:3px;text-transform:uppercase;margin-top:18px;font-weight:300}
+        @keyframes plFill{0%{width:0}60%{width:75%}100%{width:100%}}
+
+        /* ===== CUSTOM CURSOR ===== */
+        .cur-d,.cur-r{position:fixed;pointer-events:none;z-index:99999;border-radius:50%;transition:transform .1s ease}
+        .cur-d{width:7px;height:7px;background:var(--gl)}
+        .cur-r{width:38px;height:38px;border:1.5px solid rgba(76,175,80,.35);transform:translate(-50%,-50%);transition:all .18s ease}
+        .cur-r.h{width:56px;height:56px;border-color:var(--gl);background:rgba(76,175,80,.04)}
+
+        /* ===== NAVBAR ===== */
+        .nav{position:fixed;top:0;left:0;width:100%;z-index:9999;padding:22px 60px;display:flex;align-items:center;justify-content:space-between;transition:all .4s ease;background:transparent}
+        .nav.fix{background:rgba(10,10,10,.96);backdrop-filter:blur(22px);padding:13px 60px;box-shadow:0 2px 30px rgba(0,0,0,.3)}
+        .n-logo{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--w);text-decoration:none;letter-spacing:2px;cursor:pointer}
+        .n-logo b{color:var(--gl)}
+        .n-links{display:flex;align-items:center;gap:36px;list-style:none}
+        .n-links a{color:rgba(255,255,255,.78);text-decoration:none;font-size:.8rem;font-weight:500;letter-spacing:1.8px;text-transform:uppercase;transition:color .3s ease;position:relative;cursor:pointer}
+        .n-links a::after{content:'';position:absolute;bottom:-5px;left:0;width:0;height:1.5px;background:var(--gl);transition:width .3s ease}
+        .n-links a:hover,.n-links a.on{color:var(--gl)}
+        .n-links a:hover::after,.n-links a.on::after{width:100%}
+        .n-cta{background:var(--gp)!important;color:var(--w)!important;padding:9px 26px!important;border-radius:3px;border:1px solid var(--gp)!important;transition:all .3s ease!important}
+        .n-cta:hover{background:transparent!important;border-color:var(--gl)!important}
+        .n-cta::after{display:none!important}
+        .mob-tog{display:none;flex-direction:column;gap:5px;cursor:pointer;z-index:10001}
+        .mob-tog span{width:26px;height:2px;background:var(--w);transition:all .3s ease;display:block}
+        .mob-tog.on span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+        .mob-tog.on span:nth-child(2){opacity:0}
+        .mob-tog.on span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+        .mob-menu{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(10,10,10,.98);z-index:9998;align-items:center;justify-content:center;flex-direction:column;gap:28px;opacity:0;transition:opacity .4s ease}
+        .mob-menu.on{display:flex;opacity:1}
+        .mob-menu a{color:var(--w);text-decoration:none;font-size:1.2rem;font-weight:500;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:color .3s}
+        .mob-menu a:hover{color:var(--gl)}
+
+        /* ===== PAGE SYSTEM ===== */
+        .pg{display:none;opacity:0;transition:opacity .5s ease}
+        .pg.on{display:block;opacity:1}
+
+        /* ===== HERO ===== */
+        .hero{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:linear-gradient(135deg,var(--bk) 0%,var(--gd) 50%,var(--bk) 100%)}
+        .hero-pat{position:absolute;top:0;left:0;width:100%;height:100%;opacity:.025;background-image:radial-gradient(circle at 25% 25%,var(--gl) 1px,transparent 1px),radial-gradient(circle at 75% 75%,var(--gl) 1px,transparent 1px);background-size:60px 60px}
+        .hero-gw{position:absolute;width:550px;height:550px;border-radius:50%;background:radial-gradient(circle,rgba(76,175,80,.1) 0%,transparent 70%);animation:hgw 8s ease-in-out infinite alternate}
+        .hero-gw.a{top:-180px;right:-180px}
+        .hero-gw.b{bottom:-180px;left:-180px;animation-delay:4s}
+        @keyframes hgw{0%{transform:scale(1);opacity:.5}100%{transform:scale(1.25);opacity:1}}
+        .hero-c{position:relative;z-index:10;text-align:center;max-width:920px;padding:0 30px}
+        .h-badge{display:inline-flex;align-items:center;gap:10px;background:rgba(76,175,80,.08);border:1px solid rgba(76,175,80,.22);padding:7px 22px;border-radius:50px;margin-bottom:36px;color:var(--gl);font-size:.72rem;letter-spacing:3px;text-transform:uppercase;font-weight:600}
+        .h-dot{width:6px;height:6px;background:var(--gg);border-radius:50%;animation:hdp 2s ease-in-out infinite}
+        @keyframes hdp{0%,100%{box-shadow:0 0 0 0 rgba(0,230,118,.4)}50%{box-shadow:0 0 0 8px rgba(0,230,118,0)}}
+        .hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,4.5vw,3.8rem);font-weight:700;color:var(--w);line-height:1.15;margin-bottom:28px;letter-spacing:-1px}
+        .hero h1 em{color:var(--gl);font-style:normal}
+        .hero-sub{font-size:clamp(.95rem,1.5vw,1.12rem);color:rgba(255,255,255,.68);max-width:720px;margin:0 auto 45px;line-height:1.8;font-weight:300}
+        .hero-btns{display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap}
+
+        /* BUTTONS */
+        .btn-p,.btn-s{display:inline-flex;align-items:center;gap:10px;padding:15px 36px;border-radius:3px;font-size:.82rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;text-decoration:none;cursor:pointer;transition:all .4s ease;position:relative;overflow:hidden;border:none}
+        .btn-p{background:var(--gp);color:var(--w);border:2px solid var(--gp)}
+        .btn-p::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent);transition:left .5s ease}
+        .btn-p:hover::before{left:100%}
+        .btn-p:hover{background:var(--gm);border-color:var(--gm);transform:translateY(-2px);box-shadow:0 4px 25px rgba(76,175,80,.3)}
+        .btn-s{background:transparent;color:var(--w);border:1.5px solid rgba(255,255,255,.28)}
+        .btn-s:hover{border-color:var(--gl);color:var(--gl);transform:translateY(-2px)}
+        .btn-g{background:var(--gp);color:var(--w);border:2px solid var(--gp);display:inline-flex;align-items:center;gap:10px;padding:15px 36px;border-radius:3px;font-size:.82rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;text-decoration:none;cursor:pointer;transition:all .4s ease;font-family:'Inter',sans-serif}
+        .btn-g:hover{background:var(--gm);transform:translateY(-2px);box-shadow:0 4px 25px rgba(76,175,80,.3)}
+
+        .hero-scroll{position:absolute;bottom:35px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:7px;color:rgba(255,255,255,.35);font-size:.68rem;letter-spacing:3px;text-transform:uppercase;animation:scb 2s ease-in-out infinite}
+        .scr-ln{width:1px;height:36px;background:linear-gradient(to bottom,var(--gl),transparent)}
+        @keyframes scb{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
+
+        /* PAGE HERO */
+        .pg-hero{min-height:55vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:linear-gradient(135deg,var(--bk) 0%,var(--gd) 50%,var(--bk) 100%)}
+        .pg-hero .hero-c{padding-top:90px}
+        .pg-hero h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3rem);font-weight:700;color:var(--w);line-height:1.2;margin-bottom:18px}
+        .pg-hero p{font-size:1.05rem;color:rgba(255,255,255,.6);max-width:680px;margin:0 auto;line-height:1.8;font-weight:300}
+
+        /* ===== SECTIONS ===== */
+        .sec{padding:110px 60px;position:relative}
+        .sec-dk{background:var(--dg);color:var(--w)}
+        .sec-gn{background:var(--gd);color:var(--w)}
+        .sec-lt{background:var(--ow)}
+        .sec-cr{background:var(--cr)}
+        .wrap{max-width:1180px;margin:0 auto}
+        .s-label{display:inline-flex;align-items:center;gap:10px;font-size:.72rem;letter-spacing:4px;text-transform:uppercase;font-weight:600;color:var(--gl);margin-bottom:18px}
+        .s-ln{width:28px;height:1.5px;background:var(--gl)}
+        .s-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:700;line-height:1.2;margin-bottom:22px}
+        .s-title em{font-style:normal;color:var(--gl)}
+        .s-sub{font-size:1.02rem;line-height:1.8;max-width:680px;font-weight:300;opacity:.78}
+
+        /* ===== SCROLL ANIMATIONS ===== */
+        .rv{opacity:0;transform:translateY(45px);transition:all .7s cubic-bezier(.25,.46,.45,.94)}
+        .rv.vis{opacity:1;transform:translateY(0)}
+        .rvl{opacity:0;transform:translateX(-55px);transition:all .7s cubic-bezier(.25,.46,.45,.94)}
+        .rvl.vis{opacity:1;transform:translateX(0)}
+        .rvr{opacity:0;transform:translateX(55px);transition:all .7s cubic-bezier(.25,.46,.45,.94)}
+        .rvr.vis{opacity:1;transform:translateX(0)}
+        .rvs{opacity:0;transform:scale(.92);transition:all .7s cubic-bezier(.25,.46,.45,.94)}
+        .rvs.vis{opacity:1;transform:scale(1)}
+
+        /* ===== TRUST BAR ===== */
+        .tbar{display:flex;align-items:center;justify-content:center;gap:45px;padding:45px 60px;background:var(--ow);border-top:1px solid var(--bg);border-bottom:1px solid var(--bg);flex-wrap:wrap}
+        .t-item{display:flex;align-items:center;gap:10px;font-size:.82rem;font-weight:500;color:var(--mg);letter-spacing:.5px}
+        .t-ico{width:34px;height:34px;background:var(--gpl);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.95rem;color:var(--gp)}
+
+        /* ===== SPLIT GRID ===== */
+        .split{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center;margin-top:55px}
+        .split-img{position:relative}
+        .split-img-box{width:100%;height:480px;border-radius:6px;overflow:hidden;position:relative}
+        .split-img-box img{width:100%;height:100%;object-fit:cover}
+        .split-img-ov{position:absolute;bottom:0;left:0;width:100%;padding:28px;background:linear-gradient(to top,rgba(0,0,0,.75),transparent)}
+        .split-img-qt{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--w);font-style:italic}
+        .split-acc{position:absolute;top:-16px;right:-16px;width:100px;height:100px;border:2px solid var(--gl);border-radius:3px;z-index:-1}
+        .spl-con h3{font-family:'Playfair Display',serif;font-size:1.7rem;margin-bottom:18px;line-height:1.3}
+        .spl-con p{font-size:.97rem;line-height:1.85;margin-bottom:16px;opacity:.82}
+        .grn{font-weight:600;color:var(--gl)}
+
+        /* ===== STATS ===== */
+        .stats{display:grid;grid-template-columns:repeat(4,1fr);background:var(--gd);padding:55px;border-radius:6px;margin-top:55px}
+        .st-i{text-align:center;position:relative}
+        .st-i:not(:last-child)::after{content:'';position:absolute;right:0;top:20%;height:60%;width:1px;background:rgba(255,255,255,.12)}
+        .st-n{font-family:'Playfair Display',serif;font-size:2.8rem;font-weight:700;color:var(--gl);margin-bottom:6px}
+        .st-l{font-size:.75rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.55);font-weight:500}
+
+        /* ===== DIFF CARDS ===== */
+        .dg{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:55px}
+        .dc{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.07);border-radius:6px;padding:40px 32px;transition:all .4s ease;position:relative;overflow:hidden}
+        .dc::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px;background:linear-gradient(90deg,var(--gp),var(--gl));transform:scaleX(0);transform-origin:left;transition:transform .4s ease}
+        .dc:hover::before{transform:scaleX(1)}
+        .dc:hover{background:rgba(255,255,255,.05);border-color:rgba(76,175,80,.18);transform:translateY(-4px)}
+        .dc-ico{width:46px;height:46px;background:rgba(76,175,80,.08);border-radius:6px;display:flex;align-items:center;justify-content:center;margin-bottom:22px;font-size:1.3rem}
+        .dc h4{font-family:'Playfair Display',serif;font-size:1.15rem;margin-bottom:12px;color:var(--w)}
+        .dc p{font-size:.88rem;line-height:1.8;color:rgba(255,255,255,.58)}
+
+        /* ===== PROCESS ===== */
+        .pr-grid{margin-top:55px;position:relative}
+        .pr-line{position:absolute;left:27px;top:0;width:2px;height:100%;background:linear-gradient(to bottom,var(--gl),var(--gp),transparent)}
+        .pr-step{display:flex;gap:35px;margin-bottom:45px;position:relative;padding-left:75px}
+        .pr-num{position:absolute;left:0;top:0;width:54px;height:54px;background:var(--gp);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--w);z-index:2;box-shadow:0 0 0 5px var(--ow),0 0 0 7px rgba(76,175,80,.18)}
+        .pr-step.dk .pr-num{box-shadow:0 0 0 5px var(--dg),0 0 0 7px rgba(76,175,80,.18)}
+        .pr-con h4{font-family:'Playfair Display',serif;font-size:1.2rem;margin-bottom:10px}
+        .pr-con p{font-size:.92rem;line-height:1.8;color:var(--lg)}
+        .pr-con.wh p{color:rgba(255,255,255,.6)}
+
+        /* ===== FEATURED AUTHORS ===== */
+        .au-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;margin-top:55px}
+        .au-card{background:var(--w);border-radius:6px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.1);transition:all .4s ease;border:1px solid var(--bg)}
+        .au-card:hover{transform:translateY(-7px);box-shadow:0 12px 40px rgba(0,0,0,.16);border-color:var(--gl)}
+        .au-top{background:linear-gradient(135deg,var(--gd),var(--bk));padding:32px;text-align:center;position:relative}
+        .au-photo{width:95px;height:95px;border-radius:50%;overflow:hidden;margin:0 auto 12px;border:3px solid var(--gl);box-shadow:0 0 18px rgba(76,175,80,.25)}
+        .au-photo img{width:100%;height:100%;object-fit:cover}
+        .au-name{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--w);margin-bottom:4px}
+        .au-camp{font-size:.68rem;letter-spacing:2px;text-transform:uppercase;color:var(--gl);font-weight:600}
+        .au-body{padding:28px;text-align:center}
+        .bk-cover{width:150px;height:210px;margin:0 auto 18px;border-radius:3px;overflow:hidden;box-shadow:0 6px 25px rgba(0,0,0,.18);transition:transform .4s ease;cursor:pointer}
+        .bk-cover:hover{transform:scale(1.04)}
+        .bk-cover a{display:block;width:100%;height:100%}
+        .bk-cover img{width:100%;height:100%;object-fit:cover}
+        .au-bt{font-family:'Playfair Display',serif;font-size:1rem;margin-bottom:6px;color:var(--dg)}
+        .au-genre{font-size:.78rem;color:var(--lg);margin-bottom:14px;letter-spacing:1px}
+        .amz-btn{display:inline-flex;align-items:center;gap:8px;background:#232f3e;color:#ff9900;padding:9px 20px;border-radius:3px;text-decoration:none;font-size:.78rem;font-weight:600;letter-spacing:1px;transition:all .3s ease}
+        .amz-btn:hover{background:#131921;transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.2)}
+        .amz-btn svg{width:16px;height:16px;flex-shrink:0}
+        .au-email{display:block;font-size:.78rem;color:var(--gp);text-decoration:none;transition:color .3s;margin-top:8px}
+        .au-email:hover{color:var(--gm)}
+
+        /* ===== SERVICES ===== */
+        .sv-list{margin-top:55px}
+        .sv-item{background:var(--w);border:1px solid var(--bg);border-radius:6px;padding:45px;margin-bottom:28px;transition:all .4s ease;position:relative;overflow:hidden}
+        .sv-item::before{content:'';position:absolute;left:0;top:0;width:4px;height:100%;background:linear-gradient(to bottom,var(--gl),var(--gp))}
+        .sv-item:hover{border-color:var(--gl);box-shadow:0 8px 35px rgba(0,0,0,.1);transform:translateX(4px)}
+        .sv-hd{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:22px;flex-wrap:wrap;gap:10px}
+        .sv-num{font-family:'Playfair Display',serif;font-size:2.8rem;font-weight:700;color:var(--gpl);line-height:1}
+        .sv-tag{background:var(--gpl);color:var(--gp);padding:5px 14px;border-radius:50px;font-size:.68rem;letter-spacing:2px;text-transform:uppercase;font-weight:600}
+        .sv-item h3{font-family:'Playfair Display',serif;font-size:1.45rem;color:var(--dg);margin-bottom:14px}
+        .sv-item>p{font-size:.96rem;line-height:1.8;color:var(--lg);margin-bottom:22px}
+        .sv-inc{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:22px}
+        .sv-ii{display:flex;align-items:flex-start;gap:9px;font-size:.88rem;color:var(--mg)}
+        .sv-ck{color:var(--gp);font-weight:700;font-size:.95rem;margin-top:2px;flex-shrink:0}
+        .sv-cta{display:inline-flex;align-items:center;gap:9px;color:var(--gp);font-weight:600;font-size:.82rem;letter-spacing:1px;text-decoration:none;cursor:pointer;transition:all .3s}
+        .sv-cta:hover{color:var(--gm);gap:14px}
+
+        /* ===== VALUES ===== */
+        .vg{display:grid;grid-template-columns:repeat(2,1fr);gap:28px;margin-top:55px}
+        .vc{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:6px;padding:38px;transition:all .4s ease}
+        .vc:hover{background:rgba(255,255,255,.06);border-color:rgba(76,175,80,.22);transform:translateY(-3px)}
+        .vc-n{font-family:'Playfair Display',serif;font-size:2.3rem;font-weight:700;color:rgba(76,175,80,.25);margin-bottom:12px}
+        .vc h4{font-family:'Playfair Display',serif;font-size:1.12rem;color:var(--w);margin-bottom:10px}
+        .vc p{font-size:.9rem;line-height:1.8;color:rgba(255,255,255,.55)}
+
+        /* ===== NOT LIST ===== */
+        .nl{margin-top:28px}
+        .ni{display:flex;align-items:flex-start;gap:14px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+        .nx{color:#ef5350;font-weight:700;font-size:1.05rem;flex-shrink:0;margin-top:2px}
+        .ni p{font-size:.92rem;color:rgba(255,255,255,.6);line-height:1.7}
+
+        /* ===== FOUNDER ===== */
+        .fn-grid{display:grid;grid-template-columns:380px 1fr;gap:70px;align-items:center;margin-top:55px}
+        .fn-img{position:relative}
+        .fn-img-box{width:100%;height:480px;border-radius:6px;overflow:hidden;box-shadow:0 12px 45px rgba(0,0,0,.18)}
+        .fn-img-box img{width:100%;height:100%;object-fit:cover}
+        .fn-acc{position:absolute;bottom:-12px;left:-12px;width:90px;height:90px;background:var(--gp);border-radius:3px;z-index:-1}
+        .fn-tag{position:absolute;bottom:28px;left:-28px;background:var(--gd);color:var(--w);padding:14px 28px;border-radius:3px;box-shadow:0 6px 25px rgba(0,0,0,.2)}
+        .fn-tag h4{font-family:'Playfair Display',serif;font-size:1.05rem;margin-bottom:2px}
+        .fn-tag span{font-size:.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--gl)}
+        .fn-con h3{font-family:'Playfair Display',serif;font-size:1.9rem;margin-bottom:18px}
+        .fn-con p{font-size:.97rem;line-height:1.85;margin-bottom:16px;opacity:.82}
+        .fn-sig{margin-top:28px;display:flex;align-items:center;gap:14px}
+        .fn-sig-l{width:38px;height:2px;background:var(--gp)}
+        .fn-sig-t{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-style:italic;color:var(--gp)}
+
+        /* ===== FOUNDER BANNER ===== */
+        .fn-ban{display:grid;grid-template-columns:1fr 1fr;min-height:460px}
+        .fn-ban-img{overflow:hidden}
+        .fn-ban-img img{width:100%;height:100%;object-fit:cover}
+        .fn-ban-con{background:var(--gd);color:var(--w);padding:70px 55px;display:flex;flex-direction:column;justify-content:center}
+        .fn-ban-con h3{font-family:'Playfair Display',serif;font-size:1.9rem;margin-bottom:18px;line-height:1.3}
+        .fn-ban-con p{font-size:.97rem;line-height:1.85;opacity:.78;margin-bottom:14px}
+
+        /* ===== QUOTE ===== */
+        .qt-sec{padding:75px 60px;text-align:center;background:var(--ow)}
+        .qt-mk{font-family:'Playfair Display',serif;font-size:4.5rem;color:var(--gl);line-height:1;margin-bottom:8px}
+        .qt-tx{font-family:'Cormorant Garamond',serif;font-size:clamp(1.3rem,2.2vw,1.7rem);font-style:italic;color:var(--dg);max-width:780px;margin:0 auto 18px;line-height:1.5}
+        .qt-au{font-size:.8rem;letter-spacing:3px;text-transform:uppercase;color:var(--gp);font-weight:600}
+
+        /* ===== CTA SECTION ===== */
+        .cta-sec{padding:90px 60px;background:linear-gradient(135deg,var(--gd),var(--bk));text-align:center;position:relative;overflow:hidden}
+        .cta-sec::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at center,rgba(76,175,80,.04) 0%,transparent 50%)}
+        .cta-sec .wrap{position:relative;z-index:2}
+        .cta-sec h2{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3vw,2.4rem);color:var(--w);margin-bottom:18px;line-height:1.25;max-width:780px;margin-left:auto;margin-right:auto}
+        .cta-sec p{font-size:1rem;color:rgba(255,255,255,.55);max-width:620px;margin:0 auto 35px;line-height:1.8}
+
+        /* ===== FORMS ===== */
+        .f-wrap{max-width:780px;margin:55px auto 0}
+        .f-sec-t{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--dg);margin-bottom:22px;padding-bottom:10px;border-bottom:2px solid var(--gpl)}
+        .fg{margin-bottom:22px}
+        .fg label{display:block;font-size:.83rem;font-weight:600;color:var(--dg);margin-bottom:7px;letter-spacing:.4px}
+        .fg label .req{color:var(--gp)}
+        .fg input,.fg select,.fg textarea{width:100%;padding:13px 16px;border:1.5px solid var(--bg);border-radius:3px;font-family:'Inter',sans-serif;font-size:.93rem;color:var(--dg);background:var(--w);transition:all .3s ease;outline:none}
+        .fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--gp);box-shadow:0 0 0 3px rgba(76,175,80,.08)}
+        .fg textarea{min-height:115px;resize:vertical}
+        .fg .ht{font-size:.78rem;color:var(--lg);margin-top:5px;font-style:italic}
+        .f-row{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+        .f-note{margin-top:36px;padding:28px;background:var(--gpl);border-radius:6px;border-left:4px solid var(--gp)}
+        .f-note p{font-size:.88rem;line-height:1.8;color:var(--mg);margin-bottom:8px}
+        .f-note p:last-child{margin-bottom:0}
+        .f-note a{color:var(--gp);font-weight:600;text-decoration:none}
+
+        /* ===== CONTACT ===== */
+        .ct-grid{display:grid;grid-template-columns:1fr 1fr;gap:55px;margin-top:55px}
+        .ct-card{background:var(--w);border:1px solid var(--bg);border-radius:6px;padding:36px;transition:all .4s ease;margin-bottom:18px}
+        .ct-card:hover{border-color:var(--gl);box-shadow:0 4px 18px rgba(0,0,0,.08)}
+        .ct-ico{width:46px;height:46px;background:var(--gpl);border-radius:6px;display:flex;align-items:center;justify-content:center;margin-bottom:18px;font-size:1.2rem}
+        .ct-card h4{font-family:'Playfair Display',serif;font-size:1.08rem;margin-bottom:9px;color:var(--dg)}
+        .ct-card p{font-size:.9rem;line-height:1.7;color:var(--lg)}
+        .ct-em{display:inline-block;margin-top:7px;color:var(--gp);font-weight:600;font-size:.97rem;text-decoration:none}
+
+        /* ===== PARTICLES ===== */
+        .ptc{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:hidden}
+        .pt{position:absolute;width:3px;height:3px;background:var(--gl);border-radius:50%;opacity:0;animation:ptf linear infinite}
+        @keyframes ptf{0%{opacity:0;transform:translateY(100vh) scale(0)}10%{opacity:.5}90%{opacity:.5}100%{opacity:0;transform:translateY(-10vh) scale(1)}}
+
+        /* ===== FOOTER ===== */
+        .footer{background:var(--bk);color:var(--w);padding:75px 60px 28px}
+        .ft-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1.5fr;gap:55px;margin-bottom:55px}
+        .ft-brand{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--w);margin-bottom:14px;letter-spacing:2px}
+        .ft-brand b{color:var(--gl)}
+        .ft-tag{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.7;margin-bottom:18px}
+        .ft-email{display:inline-flex;align-items:center;gap:7px;color:var(--gl);text-decoration:none;font-size:.88rem;transition:color .3s}
+        .ft-email:hover{color:var(--gg)}
+        .ft-hd{font-size:.75rem;letter-spacing:3px;text-transform:uppercase;color:var(--gl);margin-bottom:22px;font-weight:600}
+        .ft-links{list-style:none}
+        .ft-links li{margin-bottom:10px}
+        .ft-links a{color:rgba(255,255,255,.45);text-decoration:none;font-size:.88rem;transition:color .3s;cursor:pointer}
+        .ft-links a:hover{color:var(--w)}
+        .ft-pol{font-size:.83rem;color:rgba(255,255,255,.35);line-height:1.7}
+        .ft-bot{border-top:1px solid rgba(255,255,255,.07);padding-top:28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+        .ft-copy{font-size:.78rem;color:rgba(255,255,255,.25)}
+        .ft-made{font-size:.78rem;color:rgba(255,255,255,.25)}
+        .ft-made b{color:var(--gl)}
+
+        /* ===== RESPONSIVE ===== */
+        @media(max-width:1024px){
+            .sec{padding:80px 35px}
+            .nav{padding:16px 28px}
+            .nav.fix{padding:12px 28px}
+            .split{grid-template-columns:1fr;gap:35px}
+            .fn-grid{grid-template-columns:1fr;gap:35px}
+            .fn-img-box{height:380px}
+            .dg{grid-template-columns:1fr 1fr}
+            .stats{grid-template-columns:repeat(2,1fr);gap:25px}
+            .st-i:nth-child(2)::after{display:none}
+            .ft-grid{grid-template-columns:1fr 1fr;gap:35px}
+            .au-grid{grid-template-columns:1fr 1fr}
+            .ct-grid{grid-template-columns:1fr}
+            .fn-ban{grid-template-columns:1fr}
+            .fn-ban-img{height:380px}
+        }
+        @media(max-width:768px){
+            html{font-size:15px}
+            .sec{padding:55px 18px}
+            .nav{padding:14px 18px}
+            .n-links{display:none}
+            .mob-tog{display:flex}
+            .hero h1{font-size:2.2rem}
+            .pg-hero h1{font-size:2rem}
+            .s-title{font-size:1.8rem}
+            .dg{grid-template-columns:1fr}
+            .stats{grid-template-columns:1fr;padding:35px 25px}
+            .st-i::after{display:none!important}
+            .st-i{padding:12px 0}
+            .au-grid{grid-template-columns:1fr;max-width:380px;margin-left:auto;margin-right:auto}
+            .sv-inc{grid-template-columns:1fr}
+            .sv-item{padding:28px}
+            .f-row{grid-template-columns:1fr}
+            .vg{grid-template-columns:1fr}
+            .ft-grid{grid-template-columns:1fr;gap:25px}
+            .ft-bot{flex-direction:column;text-align:center}
+            .fn-tag{left:18px}
+            .split-acc{display:none}
+            .tbar{padding:28px 18px;gap:20px}
+            .hero-btns{flex-direction:column;width:100%}
+            .hero-btns .btn-p,.hero-btns .btn-s{width:100%;justify-content:center}
+            .cta-sec{padding:55px 18px}
+            .cta-sec h2{font-size:1.8rem}
+            .fn-ban-con{padding:45px 25px}
+            .cur-d,.cur-r{display:none}
+            .hero-scroll{display:none}
+            .qt-sec{padding:50px 18px}
+        }
+        @media(max-width:480px){
+            .hero h1{font-size:1.85rem}
+            .pl-logo{font-size:1.8rem}
+            .qt-tx{font-size:1.2rem}
+        }
+    </style>
+</head>
+<body>
+
+<!-- PRELOADER -->
+<div class="preloader" id="preloader">
+    <div class="pl-logo">LIXO<b>TEAM</b>PRO</div>
+    <div class="pl-track"><div class="pl-bar"></div></div>
+    <div class="pl-sub">Loading Excellence</div>
+</div>
+
+<!-- CURSOR -->
+<div class="cur-d" id="cd"></div>
+<div class="cur-r" id="cr"></div>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+    <a class="n-logo" onclick="go('home')">LIXO<b>TEAM</b>PRO</a>
+    <ul class="n-links">
+        <li><a onclick="go('home')" class="on" data-p="home">Home</a></li>
+        <li><a onclick="go('about')" data-p="about">About</a></li>
+        <li><a onclick="go('services')" data-p="services">Services</a></li>
+        <li><a onclick="go('authors')" data-p="authors">Featured Authors</a></li>
+        <li><a onclick="go('apply')" data-p="apply">Apply</a></li>
+        <li><a onclick="go('contact')" data-p="contact">Contact</a></li>
+        <li><a onclick="go('apply')" class="n-cta">Get Started</a></li>
+    </ul>
+    <div class="mob-tog" id="mt" onclick="togMob()"><span></span><span></span><span></span></div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mob-menu" id="mm">
+    <a onclick="go('home');togMob()">Home</a>
+    <a onclick="go('about');togMob()">About</a>
+    <a onclick="go('services');togMob()">Services</a>
+    <a onclick="go('authors');togMob()">Featured Authors</a>
+    <a onclick="go('apply');togMob()">Apply</a>
+    <a onclick="go('contact');togMob()">Contact</a>
+</div>
+
+<!-- ===================== HOME ===================== -->
+<div class="pg on" id="pg-home">
+
+    <section class="hero">
+        <div class="hero-pat"></div>
+        <div class="hero-gw a"></div>
+        <div class="hero-gw b"></div>
+        <div class="ptc" id="ptc"></div>
+        <div class="hero-c">
+            <div class="h-badge"><div class="h-dot"></div>Premium Book Marketing</div>
+            <h1>The Publishing Industry Does Not Reward The Best Writers. It Rewards The <em>Best Marketed Books.</em></h1>
+            <p class="hero-sub">LixoTeamPro is a premium book marketing operation built exclusively for authors who refuse to let their work go unnoticed. We build structured, documented, and strategically engineered marketing systems that transform published books into recognized, selling, and lasting literary brands.</p>
+            <div class="hero-btns">
+                <a class="btn-p" onclick="go('apply')">Apply for Marketing Services &#8594;</a>
+                <a class="btn-s" onclick="go('authors')">View Featured Authors</a>
+            </div>
+        </div>
+        <div class="hero-scroll">SCROLL<div class="scr-ln"></div></div>
+    </section>
+
+    <div class="tbar">
+        <div class="t-item"><div class="t-ico">&#9733;</div>Specialized in Books Only</div>
+        <div class="t-item"><div class="t-ico">&#128274;</div>Fully Documented Process</div>
+        <div class="t-item"><div class="t-ico">&#128200;</div>Results-Driven Campaigns</div>
+        <div class="t-item"><div class="t-ico">&#128231;</div>Email-Based Accountability</div>
+        <div class="t-item"><div class="t-ico">&#127942;</div>Featured Author Platform</div>
+    </div>
+
+    <!-- TRUTH -->
+    <section class="sec">
+        <div class="wrap">
+            <div class="split">
+                <div class="split-img rvl">
+                    <div class="split-img-box">
+                        <img src="P.jpeg" alt="LixoTeamPro Founder">
+                        <div class="split-img-ov">
+                            <div class="split-img-qt">"Every book deserves a fighting chance in the marketplace."</div>
+                        </div>
+                    </div>
+                    <div class="split-acc"></div>
+                </div>
+                <div class="spl-con rvr">
+                    <div class="s-label"><div class="s-ln"></div>The Reality</div>
+                    <h3>The Hard Truth Every Author Needs to Hear Before It Is Too Late</h3>
+                    <p>Every single day, thousands of books are published across the world. Thrillers. Memoirs. Business books. Self-help guides. Fiction masterpieces. Children's stories. Every genre. Every format. Every platform.</p>
+                    <p>And the overwhelming majority of them will never be read by more than a handful of people. Not because the books are bad. Not because the authors lack talent. But because <span class="grn">no one built a strategic, professional marketing system around those books.</span></p>
+                    <p>The publishing world has changed permanently. Today, the authors who win are the ones who treat their books not just as creative works, but as serious market products that require serious marketing investment.</p>
+                    <p><span class="grn">LixoTeamPro exists for authors who are ready to take that step.</span></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- STATS -->
+    <section class="sec sec-lt" style="padding-top:0">
+        <div class="wrap">
+            <div class="stats rvs">
+                <div class="st-i"><div class="st-n" data-ct="100">0%</div><div class="st-l">Book Focused</div></div>
+                <div class="st-i"><div class="st-n" data-ct="100">0%</div><div class="st-l">Documented</div></div>
+                <div class="st-i"><div class="st-n" data-ct="100">0%</div><div class="st-l">Email-Based</div></div>
+                <div class="st-i"><div class="st-n" data-ct="100">0%</div><div class="st-l">Accountable</div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DIFFERENCE -->
+    <section class="sec sec-dk">
+        <div class="wrap">
+            <div class="rv">
+                <div class="s-label"><div class="s-ln"></div>Who We Are</div>
+                <h2 class="s-title">LixoTeamPro Is Not a Marketing Agency.<br>We Are a Book Marketing <em>Intelligence Operation.</em></h2>
+                <p class="s-sub">There is a fundamental difference between a general marketing agency that occasionally handles a book and a specialized book marketing operation that lives and breathes the publishing industry every single day.</p>
+            </div>
+            <div class="dg">
+                <div class="dc rv" style="transition-delay:.1s"><div class="dc-ico">&#128196;</div><h4>Total Documentation</h4><p>Every element of your project is handled through structured, professional, written email communication. You will always have a complete record of what was agreed upon, what actions have been taken, and what results have been generated.</p></div>
+                <div class="dc rv" style="transition-delay:.18s"><div class="dc-ico">&#127919;</div><h4>Absolute Specialization</h4><p>Books have their own ecosystem with unique discovery channels, ranking algorithms, reader psychology, and competitive dynamics. LixoTeamPro has built deep expertise through years of dedicated work exclusively in book marketing.</p></div>
+                <div class="dc rv" style="transition-delay:.26s"><div class="dc-ico">&#128274;</div><h4>Selective Acceptance</h4><p>We intentionally limit projects accepted per quarter so every author receives complete professional attention. When your project is accepted, it becomes a genuine priority backed by focused, committed work.</p></div>
+                <div class="dc rv" style="transition-delay:.34s"><div class="dc-ico">&#128200;</div><h4>Measurable Outcomes</h4><p>Everything we do produces outcomes that can be observed, measured, and reported. Every campaign has clear objectives. Every result is documented so you can see exactly what professional marketing has produced.</p></div>
+                <div class="dc rv" style="transition-delay:.42s"><div class="dc-ico">&#127942;</div><h4>Featured Author Platform</h4><p>Authors who work with us gain featured placement on our professional platform. Your book and author brand are showcased to our growing network, providing additional exposure and professional credibility.</p></div>
+                <div class="dc rv" style="transition-delay:.5s"><div class="dc-ico">&#9889;</div><h4>Evidence-Based Strategy</h4><p>Every recommendation is grounded in real data from the book market, proven performance patterns, platform algorithm research, and principles of reader psychology and consumer behavior.</p></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROCESS -->
+    <section class="sec">
+        <div class="wrap">
+            <div class="rv">
+                <div class="s-label"><div class="s-ln"></div>Our Process</div>
+                <h2 class="s-title">The LixoTeamPro Process<br>From <em>Application to Results</em></h2>
+                <p class="s-sub">We have engineered a clear, structured, and professional process that ensures every project begins, develops, and concludes with maximum efficiency and complete accountability.</p>
+            </div>
+            <div class="pr-grid">
+                <div class="pr-line"></div>
+                <div class="pr-step rv" style="transition-delay:.1s"><div class="pr-num">01</div><div class="pr-con"><h4>The Author Application</h4><p>Everything begins with your application. We ask you to provide detailed information about yourself as an author, your book, your current situation, and your goals. After submission, you receive an immediate confirmation email.</p></div></div>
+                <div class="pr-step rv" style="transition-delay:.18s"><div class="pr-num">02</div><div class="pr-con"><h4>The Strategic Assessment</h4><p>Within 24 to 48 business hours, our team conducts a thorough assessment of your book, market position, competition, and goals. We analyze your positioning, competitive landscape, and the most strategic approaches for your situation.</p></div></div>
+                <div class="pr-step rv" style="transition-delay:.26s"><div class="pr-num">03</div><div class="pr-con"><h4>The Documented Proposal</h4><p>Following our assessment, we send you a detailed strategy proposal via email. This outlines our recommended approach, reasoning behind every recommendation, scope of work, timelines, and precise expectations.</p></div></div>
+                <div class="pr-step rv" style="transition-delay:.34s"><div class="pr-num">04</div><div class="pr-con"><h4>Project Execution</h4><p>Once you approve the proposal, your project begins. Our team implements strategies with full professional commitment. Throughout execution, you receive regular documented updates via email.</p></div></div>
+                <div class="pr-step rv" style="transition-delay:.42s"><div class="pr-num">05</div><div class="pr-con"><h4>Performance Reporting</h4><p>At every defined milestone, you receive a comprehensive performance report documenting what was executed, results generated, data insights, and recommended next steps. We continuously optimize based on real data.</p></div></div>
+                <div class="pr-step rv" style="transition-delay:.5s"><div class="pr-num">06</div><div class="pr-con"><h4>Continued Partnership</h4><p>The most successful books are built through sustained effort. At the conclusion of your project, we evaluate results together and discuss the most effective path forward for lasting success.</p></div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AUTHORS PREVIEW -->
+    <section class="sec sec-lt">
+        <div class="wrap">
+            <div class="rv" style="text-align:center">
+                <div class="s-label" style="justify-content:center"><div class="s-ln"></div>Success Stories<div class="s-ln"></div></div>
+                <h2 class="s-title">Authors Who Have Trusted LixoTeamPro<br>With Their <em>Books</em></h2>
+                <p class="s-sub" style="margin:0 auto">Browse their books. See what professional book marketing looks like when it is done right.</p>
+            </div>
+            <div class="au-grid">
+                <div class="au-card rv" style="transition-delay:.1s">
+                    <div class="au-top"><div class="au-photo"><img src="AWP.webp" alt="Ariel Lawhon"></div><div class="au-name">Ariel Lawhon</div><div class="au-camp">Strategic Launch Campaign</div></div>
+                    <div class="au-body">
+                        <div class="bk-cover"><a href="https://www.amazon.com/s?k=Ariel+Lawhon" target="_blank" rel="noopener"><img src="AW.jpg" alt="Book by Ariel Lawhon"></a></div>
+                        <div class="au-bt">By Ariel Lawhon</div>
+                        <a href="https://www.amazon.com/s?k=Ariel+Lawhon" target="_blank" rel="noopener" class="amz-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M.045 18.02c.072-.116.187-.124.348-.064 2.005.914 4.167 1.371 6.475 1.371 2.334 0 4.625-.572 6.856-1.716.241-.12.441-.065.596.156.172.24.109.51-.104.672-2.334 1.404-4.793 2.106-7.376 2.106-2.584 0-4.952-.672-7.104-2.016-.208-.144-.253-.344-.147-.509zm18.647-3.58c-.263-.336-.786-.476-1.569-.42-.536.04-1.076.156-1.621.348-.184.068-.312.02-.384-.145-.06-.14-.013-.26.14-.36.476-.284 1.004-.464 1.584-.54.76-.1 1.464-.016 2.112.252.224.092.336.252.336.48-.016.364-.24.88-.672 1.548-.2.308-.424.556-.672.744-.132.1-.26.088-.384-.036-.1-.1-.088-.216.036-.348.448-.476.752-.98.912-1.512z"/></svg>Get on Amazon</a>
+                    </div>
+                </div>
+                <div class="au-card rv" style="transition-delay:.2s">
+                    <div class="au-top"><div class="au-photo"><img src="RP.webp" alt="Chris Whitaker"></div><div class="au-name">Chris Whitaker</div><div class="au-camp">Amazon Optimization</div></div>
+                    <div class="au-body">
+                        <div class="bk-cover"><a href="https://www.amazon.com/s?k=Chris+Whitaker" target="_blank" rel="noopener"><img src="R.webp" alt="Book by Chris Whitaker"></a></div>
+                        <div class="au-bt">By Chris Whitaker</div>
+                        <a href="https://www.amazon.com/s?k=Chris+Whitaker" target="_blank" rel="noopener" class="amz-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M.045 18.02c.072-.116.187-.124.348-.064 2.005.914 4.167 1.371 6.475 1.371 2.334 0 4.625-.572 6.856-1.716.241-.12.441-.065.596.156.172.24.109.51-.104.672-2.334 1.404-4.793 2.106-7.376 2.106-2.584 0-4.952-.672-7.104-2.016-.208-.144-.253-.344-.147-.509zm18.647-3.58c-.263-.336-.786-.476-1.569-.42-.536.04-1.076.156-1.621.348-.184.068-.312.02-.384-.145-.06-.14-.013-.26.14-.36.476-.284 1.004-.464 1.584-.54.76-.1 1.464-.016 2.112.252.224.092.336.252.336.48-.016.364-.24.88-.672 1.548-.2.308-.424.556-.672.744-.132.1-.26.088-.384-.036-.1-.1-.088-.216.036-.348.448-.476.752-.98.912-1.512z"/></svg>Get on Amazon</a>
+                    </div>
+                </div>
+                <div class="au-card rv" style="transition-delay:.3s">
+                    <div class="au-top"><div class="au-photo"><img src="BP.webp" alt="Kevin Wallace"></div><div class="au-name">Kevin Wallace</div><div class="au-camp">Author Brand Development</div></div>
+                    <div class="au-body">
+                        <div class="bk-cover"><a href="https://www.amazon.com/s?k=Kevin+Wallace+author" target="_blank" rel="noopener"><img src="B.webp" alt="Book by Kevin Wallace"></a></div>
+                        <div class="au-bt">By Kevin Wallace</div>
+                        <a href="https://www.amazon.com/s?k=Kevin+Wallace+author" target="_blank" rel="noopener" class="amz-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M.045 18.02c.072-.116.187-.124.348-.064 2.005.914 4.167 1.371 6.475 1.371 2.334 0 4.625-.572 6.856-1.716.241-.12.441-.065.596.156.172.24.109.51-.104.672-2.334 1.404-4.793 2.106-7.376 2.106-2.584 0-4.952-.672-7.104-2.016-.208-.144-.253-.344-.147-.509zm18.647-3.58c-.263-.336-.786-.476-1.569-.42-.536.04-1.076.156-1.621.348-.184.068-.312.02-.384-.145-.06-.14-.013-.26.14-.36.476-.284 1.004-.464 1.584-.54.76-.1 1.464-.016 2.112.252.224.092.336.252.336.48-.016.364-.24.88-.672 1.548-.2.308-.424.556-.672.744-.132.1-.26.088-.384-.036-.1-.1-.088-.216.036-.348.448-.476.752-.98.912-1.512z"/></svg>Get on Amazon</a>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align:center;margin-top:45px" class="rv"><a class="btn-g" onclick="go('authors')">View All Featured Authors &#8594;</a></div>
+        </div>
+    </section>
+
+    <section class="qt-sec">
+        <div class="wrap rvs">
+            <div class="qt-mk">"</div>
+            <div class="qt-tx">Publishing is only 10% of the journey. The other 90% is marketing. The authors who understand this build legacies. The rest build regrets.</div>
+            <div class="qt-au">LixoTeamPro</div>
+        </div>
+    </section>
+
+    <section class="cta-sec">
+        <div class="wrap rv">
+            <h2>Your Book Has Already Done Its Part. Now It Is Time For Professional Marketing To Do Its Part.</h2>
+            <p>We accept a strictly limited number of projects per quarter to protect the quality of our work. There may still be availability for your project.</p>
+            <a class="btn-p" onclick="go('apply')">Submit Your Application Now &#8594;</a>
+        </div>
+    </section>
+</div>
+
+<!-- ===================== ABOUT ===================== -->
+<div class="pg" id="pg-about">
+    <section class="pg-hero">
+        <div class="hero-pat"></div>
+        <div class="hero-gw a"></div>
+        <div class="hero-c">
+            <div class="h-badge"><div class="h-dot"></div>About Us</div>
+            <h1>Built For One Purpose. Perfected Through One Focus. Dedicated To <em>One Industry.</em></h1>
+            <p>LixoTeamPro is a book marketing operation built from the ground up with the sole purpose of helping serious authors achieve the market success their work deserves.</p>
+        </div>
+    </section>
+
+    <section class="sec">
+        <div class="wrap">
+            <div class="fn-grid">
+                <div class="fn-img rvl">
+                    <div class="fn-img-box"><img src="P.jpeg" alt="LixoTeamPro Founder"></div>
+                    <div class="fn-acc"></div>
+                    <div class="fn-tag"><h4>LixoTeamPro</h4><span>Book Marketing Specialist</span></div>
+                </div>
+                <div class="fn-con rvr">
+                    <div class="s-label"><div class="s-ln"></div>Our Story</div>
+                    <h3>Why LixoTeamPro Exists and Why That Matters For Your Book</h3>
+                    <p>The publishing industry has undergone a complete transformation. Authors today have unprecedented access to publishing platforms and global distribution channels. But beneath the surface of this expanded access lies a deeply competitive and brutally crowded marketplace.</p>
+                    <p>Millions of new books are published every single year. Every genre is saturated. Every category is competitive. Every platform is algorithmically driven. Every reader's attention is fractured across dozens of competing media formats.</p>
+                    <p>What separates the books that thrive from the books that disappear is not talent. It is strategy. It is marketing intelligence. It is professional execution of a carefully designed campaign that positions your book correctly and converts readers into buyers.</p>
+                    <p>LixoTeamPro was founded because this gap between writing quality and marketing strategy was leaving too many genuinely excellent books completely invisible. We were built to close that gap. Permanently. Professionally.</p>
+                    <div class="fn-sig"><div class="fn-sig-l"></div><div class="fn-sig-t">Excellence in Every Detail</div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="sec sec-dk">
+        <div class="wrap">
+            <div class="rv">
+                <div class="s-label"><div class="s-ln"></div>Our Philosophy</div>
+                <h2 class="s-title">The Philosophy That Drives<br>Every <em>Decision</em> We Make</h2>
+            </div>
+            <div class="vg">
+                <div class="vc rv" style="transition-delay:.1s"><div class="vc-n">01</div><h4>Every Book Is a Business</h4><p>We treat every book as a serious commercial product operating in a competitive market. Your book is not a hobby. It is a product with commercial potential and it deserves to be marketed with the same strategic rigor that the most successful businesses apply to their product launches.</p></div>
+                <div class="vc rv" style="transition-delay:.2s"><div class="vc-n">02</div><h4>Documentation Is Protection</h4><p>Too many authors get burned by marketers who made big verbal promises, took payment, delivered little, and communicated nothing. Our commitment to complete email-based documentation protects both clients and our organization. When everything is in writing, there is no room for misunderstanding.</p></div>
+                <div class="vc rv" style="transition-delay:.3s"><div class="vc-n">03</div><h4>Specialization Produces Superior Results</h4><p>Book marketing is a specialized discipline requiring specific knowledge of platforms, reader psychology, genre conventions, metadata optimization, and the unique ways books are discovered and purchased. LixoTeamPro has that specialization and it produces measurably better results.</p></div>
+                <div class="vc rv" style="transition-delay:.4s"><div class="vc-n">04</div><h4>Selectivity Is Commitment to Quality</h4><p>We limit projects because doing fewer things at the highest possible level produces far better outcomes. If you are accepted as a client, your book matters to us. Not as a number in a portfolio. As a project we are fully invested in succeeding.</p></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="sec">
+        <div class="wrap">
+            <div class="rv">
+                <div class="s-label"><div class="s-ln"></div>Our Standards</div>
+                <h2 class="s-title">Non-Negotiable Standards<br>We <em>Hold Ourselves</em> To</h2>
+            </div>
+            <div class="pr-grid" style="margin-top:35px">
+                <div class="pr-line"></div>
+                <div class="pr-step rv"><div class="pr-num">&#9733;</div><div class="pr-con"><h4>Professional Communication at All Times</h4><p>Every email we send is professionally written, clearly organized, and substantively valuable. When you receive an email from LixoTeamPro, it contains real information, real insight, and real value. Always.</p></div></div>
+                <div class="pr-step rv" style="transition-delay:.1s"><div class="pr-num">&#9733;</div><div class="pr-con"><h4>Deadlines Are Commitments</h4><p>When we set a timeline for a deliverable, that timeline is a professional commitment. We do not miss deadlines without proactive, documented communication explaining what has happened and when you can expect delivery.</p></div></div>
+                <div class="pr-step rv" style="transition-delay:.2s"><div class="pr-num">&#9733;</div><div class="pr-con"><h4>Strategy Is Always Evidence-Based</h4><p>Every recommendation is grounded in data from the book market, performance patterns from previous campaigns, platform algorithm research, and proven principles of reader psychology and consumer behavior.</p></div></div>
+                <div class="pr-step rv" style="transition-delay:.3s"><div class="pr-num">&#9733;</div><div class="pr-con"><h4>Honesty Over Comfort</h4><p>If your book has positioning problems, we will tell you clearly, professionally, and constructively. We do not tell authors what they want to hear. We tell them what they need to know to succeed.</p></div></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="sec sec-dk">
+        <div class="wrap">
+            <div class="rv">
+                <div class="s-label"><div class="s-ln"></div>Clarity</div>
+                <h2 class="s-title">What LixoTeamPro Is <em>Not</em></h2>
+                <p class="s-sub">We believe in complete transparency. That means being just as clear about what we are not as we are about what we are.</p>
+            </div>
+            <div class="nl rv">
+                <div class="ni"><div class="nx">&#10005;</div><p>We are not a blog or content platform</p></div>
+                <div class="ni"><div class="nx">&#10005;</div><p>We are not a coaching program or educational course</p></div>
+                <div class="ni"><div class="nx">&#10005;</div><p>We are not a community or author network</p></div>
+                <div class="ni"><div class="nx">&#10005;</div><p>We are not a general marketing agency that works across industries</p></div>
+                <div class="ni"><div class="nx">&#10005;</div><p>We are not a high-volume, low-attention service that accepts every author</p></div>
+                <div class="ni"><div class="nx">&#10005;</div><p>We do not conduct calls or meetings. All communication is email-based and documented</p></div>
+            </div>
+            <div style="margin-top:35px;padding:28px;border:1px solid rgba(76,175,80,.18);border-radius:6px;background:rgba(76,175,80,.04)" class="rv">
+                <p style="font-size:.97rem;color:rgba(255,255,255,.72);line-height:1.8">What we are is a focused, serious, structured, and deeply specialized book marketing operation that works with a carefully selected group of authors to build professional marketing campaigns that produce real, measurable, documented results.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="fn-ban rvs">
+        <div class="fn-ban-img"><img src="P.jpeg" alt="LixoTeamPro"></div>
+        <div class="fn-ban-con">
+            <div class="s-label"><div class="s-ln"></div>Ready?</div>
+            <h3>The Authors Building Real Literary Careers Are Making Strategic Decisions Right Now.</h3>
+            <p>The difference between an author frustrated by stagnant sales and an author watching their book grow is almost always the decision to take marketing seriously and to work with professionals who take it just as seriously.</p>
+            <p>LixoTeamPro is that professional partner. We are structured. We are documented. We are selective. And we are deeply committed to the success of every project we accept.</p>
+            <div style="margin-top:25px"><a class="btn-p" onclick="go('apply')">Submit Your Author Application &#8594;</a></div>
+        </div>
+    </div>
+</div>
+
+<!-- ===================== SERVICES ===================== -->
+<div class="pg" id="pg-services">
+    <section class="pg-hero">
+        <div class="hero-pat"></div>
+        <div class="hero-gw a"></div>
+        <div class="hero-c">
+            <div class="h-badge"><div class="h-dot"></div>Our Services</div>
+            <h1>Precision-Engineered Book Marketing Services Built For <em>Serious Authors</em></h1>
+            <p>Every service is structured, fully documented, and executed with the depth and professionalism your book's success demands. For enquiries email lixoteampro@gmail.com</p>
+        </div>
+    </section>
+    <section class="sec">
+        <div class="wrap">
+            <div class="sv-list">
+                <div class="sv-item rv"><div class="sv-hd"><div class="sv-num">01</div><div class="sv-tag">Campaign</div></div><h3>The Strategic Book Launch Campaign</h3><p>A comprehensive, multi-phase marketing operation designed to maximize your book's visibility, discoverability, and sales performance from launch. A custom-engineered, intelligence-driven campaign built specifically around your book, genre, target audience, and competitive landscape.</p><div class="sv-inc"><div class="sv-ii"><span class="sv-ck">&#10003;</span>Comprehensive market and genre analysis</div><div class="sv-ii"><span class="sv-ck">&#10003;</span>Deep target audience profiling</div><div class="sv-ii"><span class="sv-ck">&#10003;</span>Positioning statement development</div><div class="sv-ii"><span class="sv-ck">&#10003;</span>Complete platform optimization strategy</div><div class="sv-ii"><span class="sv-ck">&#10003;</span>Conversion-focused description rewrite</div><div class="sv-ii"><span class="sv-ck">&#10003;</span>Keyword research and metadata implementation</div><div class="sv-ii"><span class="sv-ck">&#10003;</span>Launch week promotional execution</div><div class="sv-ii"><span class="sv-ck">&#10003;</span>Post-launch momentum strategy</div><div class="sv-ii"><span class="sv-ck">&#10003;</span>Full campaign documentation and reporting</div><div class="sv-ii"><span class="sv-ck">&#10003;</span>Documented email updates at every milestone</div></div><a class="sv-cta" onclick="go('apply')">Apply for This Service <span>&#8594;</span></a></div>
+
+                <div class="sv-item rv"><div class="sv-hd"><div class="sv-num">02</div><div class="sv-tag">Optimization</div></div><h3>Amazon and Platform Optimization System</h3><p>A deep, comprehensive audit and complete overhaul of your book's presence on Amazon and other platforms. Engineered to dramatically improve discoverability, ranking potential, and sales conversion rate.</p><div class="sv-inc"><div class="sv-ii"><span class="sv-ck">&#10003;</span>Full listing audit report</div><div class="sv-ii"><span class="sv-ck">&#10003;</span>Keyword performance and gap analysis</div><div class="sv-ii"><span class="sv-ck">&#10003;</span>Strategic keyword research and implementation</div><div class="sv-ii"><span class="sv-ck">&#10003;</span>Conversion-optimized description rewrite</div><div class="sv-ii"><span class="sv-ck">&#10003;</span>Category and subcategory optimization</div><div class="sv-ii"><span class="sv-ck">&#10003;</span>Backend keyword optimization</div><div class="sv-ii"><span class="sv-ck">&#10003;</span>Author page professional development</div><div class="sv-ii"><span class="sv-ck">&#10003;</span>Competitive positioning analysis</div><div class="sv-ii"><span class="sv-ck">&#10003;</span>Complete optimization report</div><div class="sv-ii"><span class="sv-ck">&#10003;</span>All delivered via documented email</div></div><a class="sv-cta" onclick="go('apply')">Apply for This Service <span>&#8594;</span></a></div>
+
+                <div class="sv-item rv"><div class="sv-hd"><div class="sv-num">03</div><div class="sv-tag">Branding</div></div><h3>Professional Author Brand Development</h3><p>In today's publishing landscape, readers do not just buy books. They buy authors. This service builds the complete, coherent, and compelling professional identity your literary career needs to grow.</p><div class="sv-inc"><div class="sv-ii"><span class="sv-ck">&#10003;</span>Comprehensive author brand audit</div><div class="sv-ii"><span class="sv-ck">&#10003;</span>Strategic brand positioning development</div><div class="sv-ii"><span class="sv-ck">&#10003;</span>Complete author bio suite (3 versions)</div><div class="sv-ii"><span class="sv-ck">&#10003;</span>Brand voice and messaging guide</div><div class="sv-ii"><span class="sv-ck">&#10003;</span>Target readership clarity document</div><div class="sv-ii"><span class="sv-ck">&#10003;</span>Professional platform recommendations</div><div class="sv-ii"><span class="sv-ck">&#10003;</span>Brand consistency framework</div><div class="sv-ii"><span class="sv-ck">&#10003;</span>All documents in professional PDF format</div></div><a class="sv-cta" onclick="go('apply')">Apply for This Service <span>&#8594;</span></a></div>
+
+                <div class="sv-item rv"><div class="sv-hd"><div class="sv-num">04</div><div class="sv-tag">Ongoing</div></div><h3>Sustained Book Promotion Campaign</h3><p>A monthly, fully documented, professionally managed marketing program that keeps your book consistently visible, discoverable, and commercially active month after month.</p><div class="sv-inc"><div class="sv-ii"><span class="sv-ck">&#10003;</span>Monthly custom strategic planning</div><div class="sv-ii"><span class="sv-ck">&#10003;</span>Ongoing platform performance monitoring</div><div class="sv-ii"><span class="sv-ck">&#10003;</span>Monthly promotional copy and materials</div><div class="sv-ii"><span class="sv-ck">&#10003;</span>Evidence-based strategy optimization</div><div class="sv-ii"><span class="sv-ck">&#10003;</span>Monthly performance report</div><div class="sv-ii"><span class="sv-ck">&#10003;</span>Mid-month progress updates</div><div class="sv-ii"><span class="sv-ck">&#10003;</span>Complete campaign history record</div><div class="sv-ii"><span class="sv-ck">&#10003;</span>Strategy adjustments based on data</div></div><a class="sv-cta" onclick="go('apply')">Apply for This Service <span>&#8594;</span></a></div>
+
+                <div class="sv-item rv"><div class="sv-hd"><div class="sv-num">05</div><div class="sv-tag">Visibility</div></div><h3>Featured Author Platform Placement</h3><p>Get your book and author brand professionally featured on the LixoTeamPro platform, providing direct visibility and professional credibility that communicates seriousness to editors, reviewers, and readers.</p><div class="sv-inc"><div class="sv-ii"><span class="sv-ck">&#10003;</span>Professional author profile page</div><div class="sv-ii"><span class="sv-ck">&#10003;</span>Full book showcase presentation</div><div class="sv-ii"><span class="sv-ck">&#10003;</span>Direct purchase link integration</div><div class="sv-ii"><span class="sv-ck">&#10003;</span>Campaign type display</div><div class="sv-ii"><span class="sv-ck">&#10003;</span>Permanent platform archive inclusion</div><div class="sv-ii"><span class="sv-ck">&#10003;</span>Profile review and approval process</div></div><a class="sv-cta" onclick="go('apply')">Apply for This Service <span>&#8594;</span></a></div>
+            </div>
+            <div class="rv" style="text-align:center;margin-top:55px;padding:45px;background:var(--gpl);border-radius:6px">
+                <h3 style="font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:12px;color:var(--gd)">Not Sure Which Service Is Right for You?</h3>
+                <p style="font-size:.97rem;line-height:1.8;color:var(--mg);max-width:580px;margin:0 auto 18px">Simply apply and describe your situation. We will review your application and provide a documented recommendation for the most strategically appropriate service.</p>
+                <p style="font-size:.92rem;color:var(--gp);font-weight:600">For all enquiries: <a href="mailto:lixoteampro@gmail.com" style="color:var(--gp)">lixoteampro@gmail.com</a></p>
+            </div>
+        </div>
+    </section>
+    <section class="cta-sec"><div class="wrap rv"><h2>Every Book Has a Unique Story. Every Marketing Campaign Should Too.</h2><p>We tailor every campaign to the unique characteristics, needs, and goals of your individual book and author career.</p><a class="btn-p" onclick="go('apply')">Submit Your Application &#8594;</a></div></section>
+</div>
+
+<!-- ===================== FEATURED AUTHORS ===================== -->
+<div class="pg" id="pg-authors">
+    <section class="pg-hero">
+        <div class="hero-pat"></div>
+        <div class="hero-gw a"></div>
+        <div class="hero-c">
+            <div class="h-badge"><div class="h-dot"></div>Featured Authors</div>
+            <h1>The LixoTeamPro <em>Featured Authors</em></h1>
+            <p>Each author has partnered with LixoTeamPro to give their book the professional marketing presence it deserves. Browse their work and discover what serious marketing decisions look like.</p>
+        </div>
+    </section>
+    <section class="sec">
+        <div class="wrap">
+            <div class="au-grid">
+                <!-- Ariel Lawhon -->
+                <div class="au-card rv" style="transition-delay:.1s">
+                    <div class="au-top"><div class="au-photo"><img src="AWP.webp" alt="Ariel Lawhon"></div><div class="au-name">Ariel Lawhon</div><div class="au-camp">Strategic Launch Campaign</div></div>
+                    <div class="au-body"><div class="bk-cover"><a href="https://www.amazon.com/s?k=Ariel+Lawhon" target="_blank" rel="noopener"><img src="AW.jpg" alt="Ariel Lawhon Book"></a></div><div class="au-bt">By Ariel Lawhon</div><a href="https://www.amazon.com/s?k=Ariel+Lawhon" target="_blank" rel="noopener" class="amz-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M.045 18.02c.072-.116.187-.124.348-.064 2.005.914 4.167 1.371 6.475 1.371 2.334 0 4.625-.572 6.856-1.716.241-.12.441-.065.596.156.172.24.109.51-.104.672-2.334 1.404-4.793 2.106-7.376 2.106-2.584 0-4.952-.672-7.104-2.016-.208-.144-.253-.344-.147-.509zm18.647-3.58c-.263-.336-.786-.476-1.569-.42-.536.04-1.076.156-1.621.348-.184.068-.312.02-.384-.145-.06-.14-.013-.26.14-.36.476-.284 1.004-.464 1.584-.54.76-.1 1.464-.016 2.112.252.224.092.336.252.336.48-.016.364-.24.88-.672 1.548-.2.308-.424.556-.672.744-.132.1-.26.088-.384-.036-.1-.1-.088-.216.036-.348.448-.476.752-.98.912-1.512z"/></svg>Get on Amazon</a></div>
+                </div>
+                <!-- Chris Whitaker -->
+                <div class="au-card rv" style="transition-delay:.2s">
+                    <div class="au-top"><div class="au-photo"><img src="RP.webp" alt="Chris Whitaker"></div><div class="au-name">Chris Whitaker</div><div class="au-camp">Amazon Optimization</div></div>
+                    <div class="au-body"><div class="bk-cover"><a href="https://www.amazon.com/s?k=Chris+Whitaker" target="_blank" rel="noopener"><img src="R.webp" alt="Chris Whitaker Book"></a></div><div class="au-bt">By Chris Whitaker</div><a href="https://www.amazon.com/s?k=Chris+Whitaker" target="_blank" rel="noopener" class="amz-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M.045 18.02c.072-.116.187-.124.348-.064 2.005.914 4.167 1.371 6.475 1.371 2.334 0 4.625-.572 6.856-1.716.241-.12.441-.065.596.156.172.24.109.51-.104.672-2.334 1.404-4.793 2.106-7.376 2.106-2.584 0-4.952-.672-7.104-2.016-.208-.144-.253-.344-.147-.509zm18.647-3.58c-.263-.336-.786-.476-1.569-.42-.536.04-1.076.156-1.621.348-.184.068-.312.02-.384-.145-.06-.14-.013-.26.14-.36.476-.284 1.004-.464 1.584-.54.76-.1 1.464-.016 2.112.252.224.092.336.252.336.48-.016.364-.24.88-.672 1.548-.2.308-.424.556-.672.744-.132.1-.26.088-.384-.036-.1-.1-.088-.216.036-.348.448-.476.752-.98.912-1.512z"/></svg>Get on Amazon</a></div>
+                </div>
+                <!-- Kevin Wallace -->
+                <div class="au-card rv" style="transition-delay:.3s">
+                    <div class="au-top"><div class="au-photo"><img src="BP.webp" alt="Kevin Wallace"></div><div class="au-name">Kevin Wallace</div><div class="au-camp">Author Brand Development</div></div>
+                    <div class="au-body"><div class="bk-cover"><a href="https://www.amazon.com/s?k=Kevin+Wallace+author" target="_blank" rel="noopener"><img src="B.webp" alt="Kevin Wallace Book"></a></div><div class="au-bt">By Kevin Wallace</div><a href="https://www.amazon.com/s?k=Kevin+Wallace+author" target="_blank" rel="noopener" class="amz-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M.045 18.02c.072-.116.187-.124.348-.064 2.005.914 4.167 1.371 6.475 1.371 2.334 0 4.625-.572 6.856-1.716.241-.12.441-.065.596.156.172.24.109.51-.104.672-2.334 1.404-4.793 2.106-7.376 2.106-2.584 0-4.952-.672-7.104-2.016-.208-.144-.253-.344-.147-.509zm18.647-3.58c-.263-.336-.786-.476-1.569-.42-.536.04-1.076.156-1.621.348-.184.068-.312.02-.384-.145-.06-.14-.013-.26.14-.36.476-.284 1.004-.464 1.584-.54.76-.1 1.464-.016 2.112.252.224.092.336.252.336.48-.016.364-.24.88-.672 1.548-.2.308-.424.556-.672.744-.132.1-.26.088-.384-.036-.1-.1-.088-.216.036-.348.448-.476.752-.98.912-1.512z"/></svg>Get on Amazon</a></div>
+                </div>
+                <!-- Hernan Diaz -->
+                <div class="au-card rv" style="transition-delay:.4s">
+                    <div class="au-top"><div class="au-photo"><img src="GP.webp" alt="Hernan Diaz"></div><div class="au-name">Hernan Diaz</div><div class="au-camp">Sustained Promotion Campaign</div></div>
+                    <div class="au-body"><div class="bk-cover"><a href="https://www.amazon.com/s?k=Hernan+Diaz" target="_blank" rel="noopener"><img src="G.webp" alt="Hernan Diaz Book"></a></div><div class="au-bt">By Hernan Diaz</div><a href="https://www.amazon.com/s?k=Hernan+Diaz" target="_blank" rel="noopener" class="amz-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M.045 18.02c.072-.116.187-.124.348-.064 2.005.914 4.167 1.371 6.475 1.371 2.334 0 4.625-.572 6.856-1.716.241-.12.441-.065.596.156.172.24.109.51-.104.672-2.334 1.404-4.793 2.106-7.376 2.106-2.584 0-4.952-.672-7.104-2.016-.208-.144-.253-.344-.147-.509zm18.647-3.58c-.263-.336-.786-.476-1.569-.42-.536.04-1.076.156-1.621.348-.184.068-.312.02-.384-.145-.06-.14-.013-.26.14-.36.476-.284 1.004-.464 1.584-.54.76-.1 1.464-.016 2.112.252.224.092.336.252.336.48-.016.364-.24.88-.672 1.548-.2.308-.424.556-.672.744-.132.1-.26.088-.384-.036-.1-.1-.088-.216.036-.348.448-.476.752-.98.912-1.512z"/></svg>Get on Amazon</a></div>
+                </div>
+                <!-- Nick Bradley -->
+                <div class="au-card rv" style="transition-delay:.5s">
+                    <div class="au-top"><div class="au-photo"><img src="YP.webp" alt="Nick Bradley"></div><div class="au-name">Nick Bradley</div><div class="au-camp">Featured Author Placement</div></div>
+                    <div class="au-body"><div class="bk-cover"><a href="https://www.amazon.com/s?k=Nick+Bradley+author" target="_blank" rel="noopener"><img src="Y.webp" alt="Nick Bradley Book"></a></div><div class="au-bt">By Nick Bradley</div><a href="https://www.amazon.com/s?k=Nick+Bradley+author" target="_blank" rel="noopener" class="amz-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M.045 18.02c.072-.116.187-.124.348-.064 2.005.914 4.167 1.371 6.475 1.371 2.334 0 4.625-.572 6.856-1.716.241-.12.441-.065.596.156.172.24.109.51-.104.672-2.334 1.404-4.793 2.106-7.376 2.106-2.584 0-4.952-.672-7.104-2.016-.208-.144-.253-.344-.147-.509zm18.647-3.58c-.263-.336-.786-.476-1.569-.42-.536.04-1.076.156-1.621.348-.184.068-.312.02-.384-.145-.06-.14-.013-.26.14-.36.476-.284 1.004-.464 1.584-.54.76-.1 1.464-.016 2.112.252.224.092.336.252.336.48-.016.364-.24.88-.672 1.548-.2.308-.424.556-.672.744-.132.1-.26.088-.384-.036-.1-.1-.088-.216.036-.348.448-.476.752-.98.912-1.512z"/></svg>Get on Amazon</a></div>
+                </div>
+            </div>
+            <div class="rv" style="text-align:center;margin-top:70px;padding:55px;background:linear-gradient(135deg,var(--gd),var(--bk));border-radius:6px;color:var(--w)">
+                <h3 style="font-family:'Playfair Display',serif;font-size:1.7rem;margin-bottom:14px">Want Your Book Featured Here?</h3>
+                <p style="font-size:.97rem;line-height:1.8;color:rgba(255,255,255,.6);max-width:580px;margin:0 auto 25px">Featured placement is available to all authors who work with LixoTeamPro. Every profile is developed to the highest professional standard before going live.</p>
+                <p style="font-size:.92rem;color:var(--gl);margin-bottom:22px">Enquire at: <a href="mailto:lixoteampro@gmail.com" style="color:var(--gl)">lixoteampro@gmail.com</a></p>
+                <a class="btn-p" onclick="go('apply')">Apply for Featured Placement &#8594;</a>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- ===================== APPLY ===================== -->
+<div class="pg" id="pg-apply">
+    <section class="pg-hero">
+        <div class="hero-pat"></div>
+        <div class="hero-gw a"></div>
+        <div class="hero-c">
+            <div class="h-badge"><div class="h-dot"></div>Apply Now</div>
+            <h1>Apply to Work With <em>LixoTeamPro</em></h1>
+            <p>This is where your book's professional marketing journey begins. All communication is handled through documented email correspondence. No calls. No meetings. Just structured, professional execution.</p>
+        </div>
+    </section>
+    <section class="sec">
+        <div class="wrap">
+            <div class="rv" style="margin-bottom:55px">
+                <div class="s-label"><div class="s-ln"></div>The Process</div>
+                <h2 class="s-title">What Happens After You <em>Apply</em></h2>
+            </div>
+            <div class="pr-grid" style="margin-bottom:70px">
+                <div class="pr-line"></div>
+                <div class="pr-step rv"><div class="pr-num">01</div><div class="pr-con"><h4>Immediate Confirmation</h4><p>You receive an automatic confirmation email acknowledging receipt of your application.</p></div></div>
+                <div class="pr-step rv" style="transition-delay:.1s"><div class="pr-num">02</div><div class="pr-con"><h4>Professional Review (24 to 48 Hours)</h4><p>Our team reads your application fully, researches your book's market position, and assesses your situation carefully.</p></div></div>
+                <div class="pr-step rv" style="transition-delay:.2s"><div class="pr-num">03</div><div class="pr-con"><h4>Documented Email Response</h4><p>You receive a detailed professional email explaining our assessment and whether we can accept your project.</p></div></div>
+                <div class="pr-step rv" style="transition-delay:.3s"><div class="pr-num">04</div><div class="pr-con"><h4>Strategy Proposal (If Accepted)</h4><p>A detailed strategy document outlining our recommended service, approach, scope, timeline, and all deliverables.</p></div></div>
+                <div class="pr-step rv" style="transition-delay:.4s"><div class="pr-num">05</div><div class="pr-con"><h4>Project Commencement</h4><p>Once agreed upon and documented, your project officially begins with full professional commitment.</p></div></div>
+            </div>
+            <div class="f-wrap rv">
+                <div style="text-align:center;margin-bottom:45px">
+                    <h2 class="s-title">Author <em>Application Form</em></h2>
+                    <p class="s-sub" style="margin:0 auto">Complete every field with as much detail and honesty as possible. The quality of your application directly affects the quality of our assessment.</p>
+                </div>
+                <form action="https://formspree.io/f/mqejqbpo" method="POST">
+                    <div class="f-sec-t">Author Information</div>
+                    <div class="f-row">
+                        <div class="fg"><label>Full Name or Pen Name <span class="req">*</span></label><input type="text" name="full_name" required placeholder="Your full name or pen name"></div>
+                        <div class="fg"><label>Professional Email <span class="req">*</span></label><input type="email" name="email" required placeholder="your@email.com"><div class="ht">All communication will use this address.</div></div>
+                    </div>
+                    <div class="fg"><label>Country of Residence <span class="req">*</span></label><input type="text" name="country" required placeholder="Your country"></div>
+                    <div class="f-sec-t" style="margin-top:35px">Book Information</div>
+                    <div class="f-row">
+                        <div class="fg"><label>Full Book Title <span class="req">*</span></label><input type="text" name="book_title" required placeholder="Your book title"></div>
+                        <div class="fg"><label>Subtitle (If Any)</label><input type="text" name="subtitle" placeholder="Subtitle"></div>
+                    </div>
+                    <div class="f-row">
+                        <div class="fg"><label>Primary Genre <span class="req">*</span></label><input type="text" name="genre" required placeholder="e.g. Fiction, Self-Help"></div>
+                        <div class="fg"><label>Subgenre <span class="req">*</span></label><input type="text" name="subgenre" required placeholder="e.g. Psychological Thriller"></div>
+                    </div>
+                    <div class="fg"><label>Target Audience <span class="req">*</span></label><textarea name="target_audience" required placeholder="Describe who this book is written for in detail."></textarea></div>
+                    <div class="fg"><label>Book Synopsis <span class="req">*</span></label><textarea name="synopsis" required placeholder="Provide a detailed synopsis of your book." style="min-height:150px"></textarea></div>
+                    <div class="fg"><label>Amazon/Platform URL (If Published)</label><input type="url" name="listing_url" placeholder="https://www.amazon.com/your-book"></div>
+                    <div class="f-sec-t" style="margin-top:35px">Current Situation</div>
+                    <div class="f-row">
+                        <div class="fg"><label>Publication Status <span class="req">*</span></label><select name="status" required><option value="">Select</option><option>Already Published</option><option>Final Preparation</option><option>Manuscript Complete</option><option>Still Writing</option></select></div>
+                        <div class="fg"><label>Time Published</label><select name="time_pub"><option value="">Select</option><option>Less than 1 Month</option><option>1 to 3 Months</option><option>3 to 6 Months</option><option>6 to 12 Months</option><option>Over 1 Year</option><option>Not Yet</option></select></div>
+                    </div>
+                    <div class="fg"><label>Current Situation <span class="req">*</span></label><textarea name="situation" required placeholder="Be honest. What challenges are you facing?"></textarea></div>
+                    <div class="fg"><label>Previous Marketing Efforts <span class="req">*</span></label><textarea name="prev_marketing" required placeholder="What have you already tried and what happened?"></textarea></div>
+                    <div class="f-sec-t" style="margin-top:35px">Goals and Service</div>
+                    <div class="f-row">
+                        <div class="fg"><label>Service Interest <span class="req">*</span></label><select name="service" required><option value="">Select</option><option>Strategic Book Launch</option><option>Amazon Optimization</option><option>Author Brand Development</option><option>Sustained Promotion</option><option>Featured Placement</option><option>Not Sure, Recommend</option></select></div>
+                        <div class="fg"><label>Timeframe <span class="req">*</span></label><select name="timeframe" required><option value="">Select</option><option>Immediately</option><option>Within 30 Days</option><option>Within 60 Days</option><option>Within 90 Days</option><option>Flexible</option></select></div>
+                    </div>
+                    <div class="fg"><label>Marketing Goals <span class="req">*</span></label><textarea name="goals" required placeholder="What specific outcomes do you want to achieve?"></textarea></div>
+                    <div class="fg"><label>Anything Else?</label><textarea name="additional" placeholder="Share anything else relevant."></textarea></div>
+                    <div class="fg"><label>How Did You Find Us? <span class="req">*</span></label><input type="text" name="referral" required placeholder="How did you hear about LixoTeamPro?"></div>
+                    <input type="hidden" name="_subject" value="New Author Application - LixoTeamPro">
+                    <div style="text-align:center"><button type="submit" class="btn-g" style="border:none;font-family:'Inter',sans-serif;cursor:pointer">Submit My Application &#8594;</button></div>
+                </form>
+                <div class="f-note">
+                    <p>By submitting, you acknowledge all communication will be via email. Submission does not guarantee acceptance. All information is treated with strict confidentiality.</p>
+                    <p>Response time: 24 to 48 business hours.</p>
+                    <p>Prefer to email directly? <a href="mailto:lixoteampro@gmail.com">lixoteampro@gmail.com</a> with subject: <strong>Author Application — [Your Book Title]</strong></p>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- ===================== CONTACT ===================== -->
+<div class="pg" id="pg-contact">
+    <section class="pg-hero">
+        <div class="hero-pat"></div>
+        <div class="hero-gw a"></div>
+        <div class="hero-c">
+            <div class="h-badge"><div class="h-dot"></div>Contact Us</div>
+            <h1>Get in Touch With <em>LixoTeamPro</em></h1>
+            <p>Every inquiry is handled through documented email correspondence ensuring complete clarity, transparency, and accountability.</p>
+        </div>
+    </section>
+    <section class="sec">
+        <div class="wrap">
+            <div class="ct-grid">
+                <div>
+                    <div class="ct-card rv"><div class="ct-ico">&#128231;</div><h4>Email Us Directly</h4><p>For all inquiries, project discussions, and professional communication.</p><a href="mailto:lixoteampro@gmail.com" class="ct-em">lixoteampro@gmail.com</a></div>
+                    <div class="ct-card rv" style="transition-delay:.1s"><div class="ct-ico">&#9200;</div><h4>Response Time</h4><p>All emails are responded to within 24 to 48 business hours with a thorough, professional reply.</p></div>
+                    <div class="ct-card rv" style="transition-delay:.2s"><div class="ct-ico">&#128196;</div><h4>Communication Policy</h4><p>LixoTeamPro does not conduct telephone calls or meetings. All communication is email-based and documented for complete transparency.</p></div>
+                    <div class="ct-card rv" style="transition-delay:.3s"><div class="ct-ico">&#128203;</div><h4>Project Applications</h4><p>For faster processing, use our dedicated Application Page.</p><a onclick="go('apply')" style="color:var(--gp);font-weight:600;cursor:pointer;display:inline-block;margin-top:7px">Go to Application Page &#8594;</a></div>
+                </div>
+                <div class="rvr">
+                    <h3 style="font-family:'Playfair Display',serif;font-size:1.5rem;margin-bottom:22px">Send Us a Message</h3>
+                    <p style="font-size:.92rem;color:var(--lg);margin-bottom:28px;line-height:1.7">Use this form for general inquiries. We respond within 24 to 48 business hours.</p>
+                    <form action="https://formspree.io/f/mqejqbpo" method="POST">
+                        <div class="fg"><label>Full Name <span class="req">*</span></label><input type="text" name="contact_name" required placeholder="Your name"></div>
+                        <div class="fg"><label>Email <span class="req">*</span></label><input type="email" name="contact_email" required placeholder="your@email.com"></div>
+                        <div class="fg"><label>Subject <span class="req">*</span></label><input type="text" name="contact_subject" required placeholder="Subject"></div>
+                        <div class="fg"><label>Message <span class="req">*</span></label><textarea name="contact_message" required placeholder="Be as detailed as possible." style="min-height:170px"></textarea></div>
+                        <div class="fg"><label>How Did You Find Us?</label><input type="text" name="contact_ref" placeholder="How did you find us?"></div>
+                        <input type="hidden" name="_subject" value="Contact Message - LixoTeamPro">
+                        <button type="submit" class="btn-g" style="border:none;font-family:'Inter',sans-serif;cursor:pointer">Send Your Message &#8594;</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="sec sec-dk" style="text-align:center">
+        <div class="wrap rv">
+            <div class="s-label" style="justify-content:center"><div class="s-ln"></div>Global Reach<div class="s-ln"></div></div>
+            <h2 class="s-title">We Work With Authors <em>Worldwide</em></h2>
+            <p class="s-sub" style="margin:0 auto">Regardless of your location, our email-based system ensures seamless, documented, and professional collaboration. Your book deserves professional marketing no matter where you are.</p>
+            <div style="margin-top:35px"><a href="mailto:lixoteampro@gmail.com" class="btn-p">Email Us Now &#8594;</a></div>
+        </div>
+    </section>
+</div>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="footer">
+    <div class="ft-grid">
+        <div>
+            <div class="ft-brand">LIXO<b>TEAM</b>PRO</div>
+            <p class="ft-tag">Precision Book Marketing. Fully Documented. Completely Accountable. Genuinely Results-Driven. We are a specialized book marketing operation dedicated exclusively to helping serious authors achieve professional market success.</p>
+            <a href="mailto:lixoteampro@gmail.com" class="ft-email">&#128231; lixoteampro@gmail.com</a>
+        </div>
+        <div>
+            <div class="ft-hd">Navigation</div>
+            <ul class="ft-links">
+                <li><a onclick="go('home')">Home</a></li>
+                <li><a onclick="go('about')">About</a></li>
+                <li><a onclick="go('services')">Services</a></li>
+                <li><a onclick="go('authors')">Featured Authors</a></li>
+                <li><a onclick="go('apply')">Apply</a></li>
+                <li><a onclick="go('contact')">Contact</a></li>
+            </ul>
+        </div>
+        <div>
+            <div class="ft-hd">Services</div>
+            <ul class="ft-links">
+                <li><a onclick="go('services')">Book Launch Campaign</a></li>
+                <li><a onclick="go('services')">Amazon Optimization</a></li>
+                <li><a onclick="go('services')">Author Branding</a></li>
+                <li><a onclick="go('services')">Sustained Promotion</a></li>
+                <li><a onclick="go('services')">Featured Placement</a></li>
+            </ul>
+        </div>
+        <div>
+            <div class="ft-hd">Communication Policy</div>
+            <p class="ft-pol">All project inquiries, service discussions, and business communications are conducted exclusively via documented professional email correspondence. LixoTeamPro does not conduct telephone calls or real-time meetings for any business purpose. This ensures complete documentation, clarity, and accountability.</p>
+        </div>
+    </div>
+    <div class="ft-bot">
+        <div class="ft-copy">&copy; 2024 LixoTeamPro. All Rights Reserved.</div>
+        <div class="ft-made">Crafted with <b>&#9733;</b> for serious authors</div>
+    </div>
+</footer>
+
+<script>
+// Preloader
+window.addEventListener('load',()=>{setTimeout(()=>{document.getElementById('preloader').classList.add('done')},2800)});
+
+// Cursor
+const cd=document.getElementById('cd'),cr=document.getElementById('cr');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cd.style.left=mx-3.5+'px';cd.style.top=my-3.5+'px'});
+(function ac(){rx+=(mx-rx)*.14;ry+=(my-ry)*.14;cr.style.left=rx+'px';cr.style.top=ry+'px';requestAnimationFrame(ac)})();
+document.querySelectorAll('a,button,.btn-p,.btn-s,.btn-g,.sv-cta,.n-links a,.au-card,.dc,.vc,input,select,textarea').forEach(el=>{el.addEventListener('mouseenter',()=>cr.classList.add('h'));el.addEventListener('mouseleave',()=>cr.classList.remove('h'))});
+
+// Nav scroll
+window.addEventListener('scroll',()=>{document.getElementById('nav').classList.toggle('fix',window.scrollY>70)});
+
+// Page navigation
+function go(id){
+    document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
+    document.getElementById('pg-'+id).classList.add('on');
+    document.querySelectorAll('.n-links a[data-p]').forEach(a=>a.classList.remove('on'));
+    const al=document.querySelector('.n-links a[data-p="'+id+'"]');
+    if(al)al.classList.add('on');
+    window.scrollTo({top:0,behavior:'smooth'});
+    setTimeout(initObs,80);
+}
+
+// Mobile menu
+function togMob(){document.getElementById('mt').classList.toggle('on');document.getElementById('mm').classList.toggle('on')}
+
+// Scroll animations
+function initObs(){
+    const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis')})},{threshold:.08,rootMargin:'0px 0px -40px 0px'});
+    document.querySelectorAll('.rv,.rvl,.rvr,.rvs').forEach(el=>obs.observe(el));
+}
+
+// Particles
+function mkPtc(){
+    const c=document.getElementById('ptc');if(!c)return;
+    for(let i=0;i<25;i++){const p=document.createElement('div');p.classList.add('pt');p.style.left=Math.random()*100+'%';p.style.animationDuration=(Math.random()*14+9)+'s';p.style.animationDelay=(Math.random()*9)+'s';const s=Math.random()*2.5+1;p.style.width=s+'px';p.style.height=s+'px';c.appendChild(p)}
+}
+
+// Counter animation
+function animCt(){
+    document.querySelectorAll('.st-n[data-ct]').forEach(el=>{
+        const t=parseInt(el.dataset.ct);let c=0;const inc=t/55;
+        const tm=setInterval(()=>{c+=inc;if(c>=t){c=t;clearInterval(tm)}el.textContent=Math.floor(c)+'%'},35);
+    });
+}
+
+// Init
+document.addEventListener('DOMContentLoaded',()=>{mkPtc();initObs();setTimeout(animCt,3200)});
+</script>
+</body>
+</html>
